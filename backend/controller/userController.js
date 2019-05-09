@@ -1,5 +1,5 @@
 var mongoose = require("mongoose");
-var User = require("../models/userModel");
+var User = require("../model/userModel");
 var bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
 
@@ -48,7 +48,7 @@ exports.login = function(req,res,next){
 
 
 exports.signup = function(req,res,next){
-      
+    console.log(res.body);   
     bcrypt.hash(req.body.password,10)
     .then(hash => {
     const user = new User({

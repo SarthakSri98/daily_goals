@@ -10,11 +10,12 @@ export class BaseService {
 
   login(data)
   {
-    return this.http.post<{message:string , result:{} , isAuthenticated:Boolean, token:string }>('users/login',data);
+    return this.http.post<{message:string , result:{} , isAuthenticated:Boolean, token:string }>('http://localhost:8000/users/login',data);
   }
 
   signup(data)
   {
-    return this.http.post<{message:string , result:{} }>('users/signup',data);
+    console.log(data);
+        return this.http.post<{message:string , result:{} }>('http://localhost:8000/users/signup',data);
   }
 }
