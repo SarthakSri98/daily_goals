@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mat-checkbox .mat-checkbox-frame {
+    border-color: white;
+    background-color:black;
+}
+
+.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background, .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+    margin-top: 1px;
+    margin-left: 1px;
+    width: 18px;
+    height: 18px;
+}

@@ -1,0 +1,11 @@
+<div class="container">
+  <p class="date">{{ date }}</p> <!-- Today's date  -->
+  <section class="example-section" *ngFor="let task of tasks;let i = index">
+    <mat-checkbox color="warn" class="example-margin" [(ngModel)]="indeterminate+i">{{ task }}</mat-checkbox>
+  </section>  
+  
+
+  
+</div>
+
+

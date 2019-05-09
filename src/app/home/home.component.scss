@@ -1,0 +1,31 @@
+.container{
+    min-height: 600px;
+    height: auto;
+    position: relative;
+    margin-top: 3%;
+    margin-left: 21%;
+    width: 60%;
+    border: 2px solid black;
+    background-color: #d8d837;
+
+    .date{
+        float:right;
+        margin-right:2%; 
+    }
+}
+
+  .example-section {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 60px;
+    position: relative;
+    top: 80px;
+    left: 4%;
+
+  }
+  
+  .example-margin {
+    margin: 0 10px;
+    color:black;
+  }
