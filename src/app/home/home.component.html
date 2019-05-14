@@ -1,11 +1,51 @@
+<div style="text-align:center">
+  <h1>
+    Today's goals are :-
+  </h1>
+</div>
+<button id="openDialog" mat-fab color="warn" (click)="addNewTask(openForm)">+</button>
+
 <div class="container">
+  
   <p class="date">{{ date }}</p> <!-- Today's date  -->
-  <section class="example-section" *ngFor="let task of tasks;let i = index">
-    <mat-checkbox color="warn" class="example-margin" [(ngModel)]="indeterminate+i">{{ task }}</mat-checkbox>
+  <h3 class="info" *ngIf="taskArray.length<1">No tasks added yet!</h3>
+  <section class="example-section" *ngFor="let task of taskArray;let i = index">
+    <mat-checkbox color="warn" class="example-margin" [id]="'indeterminate'+i" (change)="checkedIn($event,i)" [checked]="taskStatusArray[i]">{{ task.taskName }} </mat-checkbox>
   </section>  
   
 
   
 </div>
+<button class="formButtons" mat-raised-button (click)="postTaskStatus()">Post Status</button>
+<button class="formButtons" mat-raised-button routerLink="/history" >History</button>
+
+<ng-template #openForm let-c="close" let-d="dismiss">
+  <mat-toolbar>
+      <span class="title center2">Add new Term</span>
+</mat-toolbar><br><br>
+  <form class="example-form center3" [formGroup]="taskForm" (ngSubmit)="postOrEditTasks()" >
+    <div formArrayName="taskData" *ngFor="let item of taskForm.get('taskData').controls; let i = index;">
+      <!-- <h2 (click)="addItem()" class="startOff" *ngIf="taskForm.get('taskData').length<=1">Add a new Task?</h2> -->
+      <span class="delete" (click)="delete(i)">x</span>
+      <div [formGroupName]="i">
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Task" rows="4" formControlName="taskName">
+        </mat-form-field>
+        <br>
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Priority" rows="4" type="number" formControlName="priority">
+        </mat-form-field>
+
+      </div>
+      <hr>
+    </div>
+    <span (click)="addItem()" class="addLink" style="font-size: 13px;float:right;cursor: pointer;"><i class="fas fa-plus"
+      style="font-size: 10px;"></i> Add more Tasks</span>
+      <button class="formButtons" type="submit"  mat-raised-button>Add</button>
+    </form>
+    <button class="formButtons" mat-raised-button (click)="Cross_click()">Cancel</button>
+    
+
+</ng-template>
 
 

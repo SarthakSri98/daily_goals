@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog, MatDialogConfig } from '@angular/material';
 import { BaseService } from '../services/base.service';
 import { FormGroup, FormControl } from '@angular/forms';
 
@@ -11,8 +11,11 @@ import { FormGroup, FormControl } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
 
-  loginForm
-  constructor(private router:Router, private _base:BaseService, public snackBar : MatSnackBar) { }
+  loginForm;
+  taskForm;
+  date:any;
+
+  constructor( private router:Router, private _base:BaseService, public snackBar : MatSnackBar) { }
 
   ngOnInit() {
     // document.getElementById('login-button').addEventListener('click',function(event){
@@ -20,20 +23,28 @@ export class LoginComponent implements OnInit {
     // document.getElementById('wrapper').classList.add('form-success');
     // const fade = document.getElementsByTagName('form');     
 //})
-this.loginForm = new FormGroup({
+   this.date = JSON.parse(localStorage.getItem('todayDate'));
+   
+   this.loginForm = new FormGroup({
     email : new FormControl(),
     password : new FormControl()
-})
+   })
+   
+   
 
 }
 login() {
+
+  
+
+
   this._base.login(this.loginForm.value).subscribe(result => {
     console.log(result);
     this._base.isAuthenticated = true;
     if (result.isAuthenticated) {
       localStorage.setItem('token', result.token);
       localStorage.setItem('user', this.loginForm.value.email);
-      this.router.navigate(['home']);
+      this.router.navigate(['today']);
     } else {
       console.log('not authenticated');
       this.snackBar.open(result.message, '', {
@@ -42,4 +53,6 @@ login() {
     }
   })
 }
+
+
 }

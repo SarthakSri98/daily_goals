@@ -1,0 +1,23 @@
+<div style="text-align:center">
+    <h1>
+      History
+    </h1>
+  </div>
+  <button id="openDialog"  mat-raised-button routerLink="/today" >Go to home</button>
+  
+  <div class="container" *ngFor="let day of taskHistory;let i=index" (click)="showTask(openForm,i)">
+    
+    <p class="date">{{ day.date }}</p> <!-- Today's date  --> 
+   
+  </div>
+
+
+  <ng-template #openForm let-c="close" let-d="dismiss">
+      <mat-toolbar>
+          <span class="title center2">Add new Term</span>
+    </mat-toolbar><br><br>
+     
+        <button class="formButtons" mat-raised-button (click)="Cross_click()">Cancel</button>
+        
+    
+    </ng-template>

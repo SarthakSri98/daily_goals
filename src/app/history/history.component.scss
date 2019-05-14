@@ -1,14 +1,14 @@
 .container{
-    min-height: 600px;
-    height: 72%;
-        position: relative;
-    left: 22%;
-    margin-top: 3%;
-    /* margin-left: 17%; */
-    width: 56%;
-    border: 2px solid black;
-    background-color: #d8d837;
-
+  min-height: 300px;
+  height: 38%;
+  position: relative;
+  left: 9%;
+  margin-right: 88px;
+  margin-top: 5%;
+  width: 24%;
+  border: 2px solid black;
+  background-color: #d8d837;
+  float: left;
     .date{
         float:right;
         margin-right:2%; 
@@ -53,7 +53,7 @@
       bottom: 80px;
       background-color: #cccc1a;
       color: white;
-      font-size: 36px;
+      font-size: 16px;
   }
 
   .startOff{
