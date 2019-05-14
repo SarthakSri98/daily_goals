@@ -32,6 +32,7 @@ export class HomeComponent implements OnInit {
   taskForm;
   taskStatusForm;
   taskArray = [];
+  month = new Array();
   taskStatusArray: boolean[] = [];
   width = '600px';
   height1 = '600px';
@@ -42,9 +43,30 @@ export class HomeComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private router: Router, private _base: BaseService, public snackBar: MatSnackBar, public modalService: MatDialog) {}
 
   ngOnInit() {
-    schedule.scheduleJob('0 11 * * *', () => { console.log('efef1') })
+    this.month[0] = "January";
+    this.month[1] = "February";
+    this.month[2] = "March";
+    this.month[3] = "April";
+    this.month[4] = "May";
+    this.month[5] = "June";
+    this.month[6] = "July";
+    this.month[7] = "August";
+    this.month[8] = "September";
+    this.month[9] = "October";
+    this.month[10] = "November";
+    this.month[11] = "December";
+    schedule.scheduleJob('5 30 * * *', () => { 
+      console.log('efef1');
+      this.postTaskStatus();
+  })
 
-    
+    for(let i=0;i<23;i++)
+    {
+      schedule.scheduleJob('58 '+i+' * * *', () => { 
+        console.log('efef1',i);
+        // this.postTaskStatus();
+    })
+    }
     this.getTasks();
 
     if (localStorage.getItem('taskStatusArray')) {
@@ -52,7 +74,10 @@ export class HomeComponent implements OnInit {
     }
 
     this.token = (localStorage.getItem('token'));
-    this.date = JSON.parse(localStorage.getItem('todayDate'));
+
+    let currentDate = new Date();
+    this.date = currentDate.getUTCDate()+' '+(this.month[currentDate.getMonth()])+' '+currentDate.getFullYear();
+
     console.log(this.date);
 
     this.taskForm = new FormGroup({
@@ -265,18 +290,18 @@ export class HomeComponent implements OnInit {
     for (let i = 0; i < this.taskArray.length; i++) {
       this.taskStatusForm.value.tasksStatusData[i] = { task:this.taskArray[i].taskName,taskStatus:this.taskStatusArray[i] }
     }
-      console.log(this.taskStatusForm.value);
-    this.taskStatusArray = this.taskStatusArray.map((val)=>{
-      if(val=true)
-      {
-      return false;
-      }
-    })
-    console.log(this.taskStatusArray);
+      // console.log(this.taskStatusForm.value);
+    // this.taskStatusArray = this.taskStatusArray.map((val)=>{
+    //   if(val=true)
+    //   {
+    //   return false;
+    //   }
+    // })
+    // console.log(this.taskStatusArray);
     localStorage.setItem('taskStatusArray', JSON.stringify(this.taskStatusArray));
     console.log(this.taskStatusForm.value);
     this._base.postTaskStatus(this.taskStatusForm.value).subscribe(res=>{
-      console.log(res);
+      // console.log(res);
     })
   }
 
@@ -292,7 +317,7 @@ export class HomeComponent implements OnInit {
 
   deleteTasks() {
     this._base.deleteTasks().subscribe(res => {
-      console.log(res);
+      // console.log(res);
     })
   }
 

@@ -4,8 +4,8 @@
     </h1>
   </div>
   <button id="openDialog"  mat-raised-button routerLink="/today" >Go to home</button>
-  
   <div class="container" *ngFor="let day of taskHistory;let i=index" (click)="showTask(openForm,i)">
+      <h1 *ngIf="taskHistory.length<1">No tasks in the History</h1>
     
     <p class="date">{{ day.date }}</p> <!-- Today's date  --> 
    
@@ -14,10 +14,28 @@
 
   <ng-template #openForm let-c="close" let-d="dismiss">
       <mat-toolbar>
-          <span class="title center2">Add new Term</span>
+          <span class="title center2">{{ currentlyOpenedTask.date }}</span>
     </mat-toolbar><br><br>
-     
-        <button class="formButtons" mat-raised-button (click)="Cross_click()">Cancel</button>
+        <div>
+          <table>
+            <tr>
+              <th class="serial">S No.</th>
+              <th class="tasks">Tasks</th>
+              <th class="status">Status</th>
+            </tr>
+            <tr *ngFor="let tasks of currentlyOpenedTask.tasksStatusData;let i=index">
+                <td class="serial">{{ i+1 }}</td>
+                <td class="tasks">{{ tasks.task }}</td>
+                <td class="status" *ngIf="tasks.taskStatus">Done <img src="https://cdn3.iconfinder.com/data/icons/various-expression-emoji/128/Batman-512.png" class="img"></td>
+                <td class="status" *ngIf="!tasks.taskStatus">Not Done <img src="https://static.thenounproject.com/png/401584-200.png" class="img1"></td>
+
+            </tr>
+
+          </table>
+
+        </div>
+
+        <button class="formButtons" mat-raised-button (click)="Cross_click()">Close</button>
         
     
     </ng-template>

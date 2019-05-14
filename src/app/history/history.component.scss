@@ -1,18 +1,59 @@
 .container{
-  min-height: 300px;
-  height: 38%;
-  position: relative;
-  left: 9%;
-  margin-right: 88px;
-  margin-top: 5%;
-  width: 24%;
+      /* min-height: 300px; */
+      height: 26%;
+      position: relative;
+      left: 9%;
+      margin-right: 88px;
+      margin-top: 5%;
+      width: 16%;
   border: 2px solid black;
   background-color: #d8d837;
   float: left;
     .date{
-        float:right;
-        margin-right:2%; 
+      text-align: center;
+      margin-top: 38%;
+      font-size: 28px;
     }
+}
+.serial{
+  padding-bottom: 18px;
+  text-align: center;
+
+}
+ .img{
+  height: 69px;
+  width: 72px;
+  -webkit-transform: scale(0.6, 0.6);
+  transform: scale(0.6, 0.6);
+  bottom: -1px;
+  right: -31px;
+  position: absolute;
+ }
+
+ .img1{
+  height: 50px;
+  width: 65px;
+  -webkit-transform: scale(0.6, 0.6);
+  transform: scale(0.6, 0.6);
+  bottom: 7px;
+  right: -54px;
+  position: absolute;
+ }
+
+.tasks{
+  position: relative;
+  /* left: 38px; */
+  padding-bottom: 18px;
+  word-break: break-word;
+  width: 59%;
+  text-align: center;
+}
+.status{
+  position: relative;
+  left: 4%;
+  text-align: center;
+  padding-bottom: 18px;
+
 }
 
 .delete{
