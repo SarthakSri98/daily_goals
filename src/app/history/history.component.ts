@@ -44,7 +44,7 @@ export class HistoryComponent implements OnInit {
       this.taskHistory = this.taskHistory.map(elem=>{
          let date = new Date(elem.date);
          console.log(date.getMonth());
-         let currentDate = date.getDate()+' '+(this.month[date.getMonth()])+' '+date.getFullYear();
+         let currentDate = (date.getDate()-1)+' '+(this.month[date.getMonth()])+' '+date.getFullYear();
          return {
            ...elem,
            date:currentDate

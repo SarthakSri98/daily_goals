@@ -19,7 +19,9 @@ import {
 import {
   BaseService
 } from '../services/base.service';
-import { componentHostSyntheticProperty } from '@angular/core/src/render3';
+import {
+  componentHostSyntheticProperty
+} from '@angular/core/src/render3';
 import schedule from 'node-schedule'
 
 @Component({
@@ -40,6 +42,7 @@ export class HomeComponent implements OnInit {
   labelPosition = 'after';
   token;
   counter: number = 0;
+  postFlag: Boolean;
   constructor(private formBuilder: FormBuilder, private router: Router, private _base: BaseService, public snackBar: MatSnackBar, public modalService: MatDialog) {}
 
   ngOnInit() {
@@ -55,17 +58,16 @@ export class HomeComponent implements OnInit {
     this.month[9] = "October";
     this.month[10] = "November";
     this.month[11] = "December";
-    schedule.scheduleJob('5 30 * * *', () => { 
+    schedule.scheduleJob('30 5 * * *', () => {
       console.log('efef1');
       this.postTaskStatus();
-  })
-
-    for(let i=0;i<23;i++)
-    {
-      schedule.scheduleJob('58 '+i+' * * *', () => { 
-        console.log('efef1',i);
-        // this.postTaskStatus();
     })
+
+    for (let i = 0; i < 23; i++) {
+      schedule.scheduleJob('30 ' + i + ' * * *', () => {
+        console.log('efef1', i);
+        // this.postTaskStatus();
+      })
     }
     this.getTasks();
 
@@ -76,14 +78,14 @@ export class HomeComponent implements OnInit {
     this.token = (localStorage.getItem('token'));
 
     let currentDate = new Date();
-    this.date = currentDate.getUTCDate()+' '+(this.month[currentDate.getMonth()])+' '+currentDate.getFullYear();
+    this.date = currentDate.getUTCDate() + ' ' + (this.month[currentDate.getMonth()]) + ' ' + currentDate.getFullYear();
 
     console.log(this.date);
 
     this.taskForm = new FormGroup({
       taskData: this.formBuilder.array([this.createItem()]),
       token: new FormControl(this.token),
-      _id : new FormControl(''),
+      _id: new FormControl(''),
     })
 
     this.taskStatusForm = new FormGroup({
@@ -97,25 +99,21 @@ export class HomeComponent implements OnInit {
     this.removeEmpty();
   }
 
-  removeEmpty()
-  {
+  removeEmpty() {
     console.log('empty tasks removed');
-    console.log('controls',this.taskForm.get('taskData').controls.length);
+    console.log('controls', this.taskForm.get('taskData').controls.length);
 
-    let i:any=0;
+    let i: any = 0;
     console.log(i);
-    while( i < this.taskForm.get('taskData').controls.length)    
-    {
-          if(this.taskForm.get('taskData').controls[i].value.taskName=='' || this.taskForm.get('taskData').controls[i].value.taskName==null)
-          {
-            this.taskForm.get('taskData').controls.shift();
-           console.log('if');
-        }
-          else 
-          {break;
-           console.log('else');
-          }
-          i++;
+    while (i < this.taskForm.get('taskData').controls.length) {
+      if (this.taskForm.get('taskData').controls[i].value.taskName == '' || this.taskForm.get('taskData').controls[i].value.taskName == null) {
+        this.taskForm.get('taskData').controls.shift();
+        console.log('if');
+      } else {
+        break;
+        console.log('else');
+      }
+      i++;
     }
   }
 
@@ -162,25 +160,24 @@ export class HomeComponent implements OnInit {
 
     this._base.getTasks().subscribe(res => {
       console.log(res.result[0]);
-      if (res.result[0])
-     {
+      if (res.result[0]) {
         this.taskArray = res.result[0].taskData;
-        localStorage.setItem('currentId',JSON.stringify(res.result[0]._id));
+        localStorage.setItem('currentId', JSON.stringify(res.result[0]._id));
         this.makeStatusArray();
-        console.log('getres',res.result[0]._id);
-     }
+        console.log('getres', res.result[0]._id);
+      }
       // this.counter = this.taskArray.length; 
-      console.log('1',this.taskArray);
-      this.taskArray.sort((a:any,b:any):number=>{
-          if (a.priority > b.priority) {
-            return -1;
-          } else if (a.priority < b.priority) {
-            return 1;
-          } else {
-            return 0;
-          }
+      console.log('1', this.taskArray);
+      this.taskArray.sort((a: any, b: any): number => {
+        if (a.priority > b.priority) {
+          return -1;
+        } else if (a.priority < b.priority) {
+          return 1;
+        } else {
+          return 0;
+        }
       });
-      console.log('2',this.taskArray);
+      console.log('2', this.taskArray);
 
       console.log((localStorage.getItem('taskStatusArray')));
       if (!JSON.parse(localStorage.getItem('taskStatusArray'))) {
@@ -191,24 +188,22 @@ export class HomeComponent implements OnInit {
   }
 
 
-  makeStatusArray()
-  {
-    if(this.counter==0)
-    {
+  makeStatusArray() {
+    if (this.counter == 0) {
       if (JSON.parse(localStorage.getItem('taskStatusArray'))) {
         this.taskStatusArray = JSON.parse(localStorage.getItem('taskStatusArray'));
       }
       console.log(this.taskArray);
       for (let i = 0; i < this.taskArray.length; i++) {
-          if(this.taskStatusArray.length<=i)
+        if (this.taskStatusArray.length <= i)
           this.taskStatusArray.push(false);
-          this.addCreatedItem(this.taskArray[i].taskName, this.taskArray[i].priority);
-          this.removeEmpty();
-        }
-        localStorage.setItem('taskStatusArray', JSON.stringify(this.taskStatusArray));
-        
+        this.addCreatedItem(this.taskArray[i].taskName, this.taskArray[i].priority);
+        this.removeEmpty();
       }
-    this.counter=1;  
+      localStorage.setItem('taskStatusArray', JSON.stringify(this.taskStatusArray));
+
+    }
+    this.counter = 1;
   }
 
 
@@ -229,13 +224,13 @@ export class HomeComponent implements OnInit {
   addTasks() {
     // if(this.taskArray.length>0)
     // this.deleteTasks();
-    this.taskForm.value._id =  JSON.parse(localStorage.getItem('currentId'));
+    this.taskForm.value._id = JSON.parse(localStorage.getItem('currentId'));
     console.log(this.taskForm.value);
     // this.taskForm.value.token = this.token;
     console.log('token', this.token);
     this.taskForm.value.token = this.token;
     this._base.postTasks(this.taskForm.value).subscribe(res => {
-      console.log('postres',res);
+      console.log('postres', res);
       this.getTasks();
     })
     console.log(this.taskForm.value);
@@ -257,7 +252,7 @@ export class HomeComponent implements OnInit {
     console.log('token', this.token);
     this.taskForm.value.token = this.token;
     this._base.editTasks(this.taskForm.value).subscribe(res => {
-      console.log('postres',res);
+      console.log('postres', res);
       this.getTasks();
     })
     console.log(this.taskForm.value);
@@ -268,17 +263,16 @@ export class HomeComponent implements OnInit {
       duration: 3000
     });
     console.log('updated');
-    this.counter=0;
+    this.counter = 0;
 
   }
 
-  postOrEditTasks()
-  {
-    console.log('id is',this.taskArray.length>0);
-    if(this.taskArray.length>0)
-    this.editTasks();
+  postOrEditTasks() {
+    console.log('id is', this.taskArray.length > 0);
+    if (this.taskArray.length > 0)
+      this.editTasks();
     else
-    this.addTasks();
+      this.addTasks();
   }
 
   Cross_click() {
@@ -286,31 +280,28 @@ export class HomeComponent implements OnInit {
   }
 
   postTaskStatus() {
-    this.taskStatusArray = JSON.parse(localStorage.getItem('taskStatusArray'));
-    for (let i = 0; i < this.taskArray.length; i++) {
-      this.taskStatusForm.value.tasksStatusData[i] = { task:this.taskArray[i].taskName,taskStatus:this.taskStatusArray[i] }
+    if (!JSON.parse(localStorage.getItem('postFlag'))) {
+      this.taskStatusArray = JSON.parse(localStorage.getItem('taskStatusArray'));
+      for (let i = 0; i < this.taskArray.length; i++) {
+        this.taskStatusForm.value.tasksStatusData[i] = {
+          task: this.taskArray[i].taskName,
+          taskStatus: this.taskStatusArray[i]
+        }
+      }
+      localStorage.setItem('taskStatusArray', JSON.stringify(this.taskStatusArray));
+      console.log(this.taskStatusForm.value);
+      this._base.postTaskStatus(this.taskStatusForm.value).subscribe(res => {
+        // console.log(res);
+        localStorage.setItem('postFLag', JSON.stringify(true));
+      })
     }
-      // console.log(this.taskStatusForm.value);
-    // this.taskStatusArray = this.taskStatusArray.map((val)=>{
-    //   if(val=true)
-    //   {
-    //   return false;
-    //   }
-    // })
-    // console.log(this.taskStatusArray);
-    localStorage.setItem('taskStatusArray', JSON.stringify(this.taskStatusArray));
-    console.log(this.taskStatusForm.value);
-    this._base.postTaskStatus(this.taskStatusForm.value).subscribe(res=>{
-      // console.log(res);
-    })
   }
 
 
-  delete(i)
-  {
-    this.taskForm.get('taskData').controls.splice(i,1);
-    this.taskForm.value.taskData.splice(i,1);
-    this.taskStatusArray.splice(i,1);
+  delete(i) {
+    this.taskForm.get('taskData').controls.splice(i, 1);
+    this.taskForm.value.taskData.splice(i, 1);
+    this.taskStatusArray.splice(i, 1);
     localStorage.setItem('taskStatusArray', JSON.stringify(this.taskStatusArray));
 
   }
