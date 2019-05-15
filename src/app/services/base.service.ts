@@ -10,44 +10,44 @@ export class BaseService {
 
   login(data)
   {
-    return this.http.post<{message:string , result:{} , isAuthenticated:Boolean, token:string }>('http://localhost:8000/users/login',data);
+    return this.http.post<{message:string , result:{} , isAuthenticated:Boolean, token:string }>('/users/login',data);
   }
 
   signup(data)
   {
     console.log(data);
-        return this.http.post<{message:string , result:{} }>('http://localhost:8000/users/signup',data);
+        return this.http.post<{message:string , result:{} }>('/users/signup',data);
   }
 
   postTasks(data)
   {
-    return this.http.post('http://localhost:8000/catalog/task',data);
+    return this.http.post('/catalog/task',data);
   }
 
   editTasks(data)
   {
-    return this.http.put('http://localhost:8000/catalog/task',data);
+    return this.http.put('/catalog/task',data);
   }
 
   getTasks()
   {
-    return this.http.get<{ error:any , result:any }>('http://localhost:8000/catalog/task');
+    return this.http.get<{ error:any , result:any }>('/catalog/task');
   }
 
   deleteTasks()
   {
-    return this.http.delete<{ message:any , result:any }>('http://localhost:8000/catalog/task');
+    return this.http.delete<{ message:any , result:any }>('/catalog/task');
 
   }
 
   postTaskStatus(data)
   {
-    return this.http.post<{}>('http://localhost:8000/catalog/taskStatus',data);
+    return this.http.post<{}>('/catalog/taskStatus',data);
   }
 
   getTaskStatus()
   {
-    return this.http.get<{message:string, data:any}>('http://localhost:8000/catalog/getTaskStatuses');
+    return this.http.get<{message:string, data:any}>('/catalog/getTaskStatuses');
   }
 
 }
