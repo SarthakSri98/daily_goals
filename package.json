@@ -9,11 +9,12 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "preinstall": "npm install -g angular-cli",
-    "postinstall": "ng build --output-path backend/angular"
+    "postinstall": "ng build --aot -prod --output-path backend/angular"
 
   },
   "private": true,
   "dependencies": {
+    "@angular/cli": "1.2.3",
     "@angular/animations": "~7.2.0",
     "@angular/cdk": "~7.3.7",
     "@angular/common": "~7.2.0",
