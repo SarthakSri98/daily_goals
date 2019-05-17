@@ -22,7 +22,6 @@ import {
 import {
   componentHostSyntheticProperty
 } from '@angular/core/src/render3';
-import schedule from 'node-schedule'
 
 @Component({
   selector: 'app-home',
@@ -32,7 +31,6 @@ import schedule from 'node-schedule'
 export class HomeComponent implements OnInit {
   date: any;
   taskForm;
-  taskStatusForm;
   taskArray = [];
   month = new Array();
   taskStatusArray: boolean[] = [];
@@ -42,7 +40,6 @@ export class HomeComponent implements OnInit {
   labelPosition = 'after';
   token;
   counter: number = 0;
-  postFlag: Boolean;
   constructor(private formBuilder: FormBuilder, private router: Router, private _base: BaseService, public snackBar: MatSnackBar, public modalService: MatDialog) {}
 
   ngOnInit() {
@@ -58,19 +55,8 @@ export class HomeComponent implements OnInit {
     this.month[9] = "October";
     this.month[10] = "November";
     this.month[11] = "December";
-    schedule.scheduleJob('30 5 * * *', () => {
-      console.log('efef1');
-      this.postTaskStatus();
-    })
-
-    for (let i = 0; i < 23; i++) {
-      schedule.scheduleJob('30 ' + i + ' * * *', () => {
-        console.log('efef1', i);
-        // this.postTaskStatus();
-      })
-    }
+   
     this.getTasks();
-
     if (localStorage.getItem('taskStatusArray')) {
       this.taskStatusArray = JSON.parse(localStorage.getItem('taskStatusArray'));
     }
@@ -88,16 +74,13 @@ export class HomeComponent implements OnInit {
       _id: new FormControl(''),
     })
 
-    this.taskStatusForm = new FormGroup({
-      date: new FormControl(this.date),
-      tasksStatusData: this.formBuilder.array([this.taskStatusData()]),
-      // taskStatus: this.formBuilder.array([]),
-      token: new FormControl(this.token),
-
-    })
+   
     console.log(this.taskForm.get('taskData').controls);
     this.removeEmpty();
   }
+
+ 
+
 
   removeEmpty() {
     console.log('empty tasks removed');
@@ -124,12 +107,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  taskStatusData(): FormGroup {
-    return this.formBuilder.group({
-      task: '',
-      taskStatus: ''
-    });
-  }
+
 
   showCreatedItem(task, priority): FormGroup {
     return this.formBuilder.group({
@@ -163,6 +141,7 @@ export class HomeComponent implements OnInit {
       if (res.result[0]) {
         this.taskArray = res.result[0].taskData;
         localStorage.setItem('currentId', JSON.stringify(res.result[0]._id));
+        localStorage.setItem('taskArray',JSON.stringify(this.taskArray));
         this.makeStatusArray();
         console.log('getres', res.result[0]._id);
       }
@@ -279,23 +258,7 @@ export class HomeComponent implements OnInit {
     this.modalService.closeAll();
   }
 
-  postTaskStatus() {
-    if (!JSON.parse(localStorage.getItem('postFlag'))) {
-      this.taskStatusArray = JSON.parse(localStorage.getItem('taskStatusArray'));
-      for (let i = 0; i < this.taskArray.length; i++) {
-        this.taskStatusForm.value.tasksStatusData[i] = {
-          task: this.taskArray[i].taskName,
-          taskStatus: this.taskStatusArray[i]
-        }
-      }
-      localStorage.setItem('taskStatusArray', JSON.stringify(this.taskStatusArray));
-      console.log(this.taskStatusForm.value);
-      this._base.postTaskStatus(this.taskStatusForm.value).subscribe(res => {
-        // console.log(res);
-        localStorage.setItem('postFLag', JSON.stringify(true));
-      })
-    }
-  }
+
 
 
   delete(i) {
